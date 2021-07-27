@@ -3,10 +3,15 @@ package com.example.checks
 import com.android.tools.lint.client.api.IssueRegistry
 import com.android.tools.lint.client.api.Vendor
 import com.android.tools.lint.detector.api.CURRENT_API
+import com.example.checks.sample.SampleCodeDetector
+import com.example.checks.accessibility.AccessibilityUsageDetector
 
 @Suppress("UnstableApiUsage")
 class SampleIssueRegistry : IssueRegistry() {
-    override val issues = listOf(SampleCodeDetector.ISSUE)
+    override val issues = listOf(
+        SampleCodeDetector.ISSUE,
+        AccessibilityUsageDetector.ISSUE
+    )
 
     override val api: Int
         get() = CURRENT_API

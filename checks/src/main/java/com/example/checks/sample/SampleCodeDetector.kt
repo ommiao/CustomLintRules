@@ -1,4 +1,4 @@
-package com.example.checks
+package com.example.checks.sample
 
 import com.android.tools.lint.client.api.UElementHandler
 import com.android.tools.lint.detector.api.Category
