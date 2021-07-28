@@ -11,6 +11,7 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.customlintrules.ui.theme.CustomLintRulesTheme
 
@@ -23,12 +24,20 @@ class MainActivity : ComponentActivity() {
                 Surface(color = MaterialTheme.colors.background) {
                     Column {
                         Icon(
-                            painter = painterResource(id = R.drawable.ic_launcher_foreground),
-                            contentDescription = null
+                            painterResource(id = R.drawable.ic_launcher_foreground),
+                            contentDescription = "      "
                         )
                         Image(
                             painter = painterResource(id = R.drawable.ic_launcher_foreground),
                             contentDescription = null
+                        )
+                        Icon(
+                            painterResource(id = R.drawable.ic_launcher_foreground),
+                            contentDescription = "test description"
+                        )
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_launcher_foreground),
+                            contentDescription = stringResource(id = R.string.app_name)
                         )
                     }
                 }
@@ -47,6 +56,5 @@ fun Greeting(name: String) {
 fun DefaultPreview() {
     CustomLintRulesTheme {
         Greeting("Android lint haha")
-        Greeting("Android luck haha")
     }
 }

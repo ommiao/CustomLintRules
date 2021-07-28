@@ -9,6 +9,7 @@ import com.android.tools.lint.detector.api.Issue
 import com.android.tools.lint.detector.api.JavaContext
 import com.android.tools.lint.detector.api.Scope
 import com.android.tools.lint.detector.api.Severity
+import com.intellij.psi.PsiParameter
 import org.jetbrains.uast.*
 
 @Suppress("UnstableApiUsage")
@@ -51,13 +52,31 @@ class AccessibilityUsageDetector : Detector(), UastScanner {
 
             override fun visitCallExpression(node: UCallExpression) {
                 if (node.methodName == "Icon" || node.methodName == "Image") {
+                    var contentDescriptionParameter: PsiParameter? = null
+                    var contentDescriptionValue: UExpression? = null
                     node.valueArguments.forEach {
-                        println("${node.getParameterForArgument(it)?.name} = ${it.asSourceString()}")
+                        val parameter = node.getParameterForArgument(it)
+                        println("${parameter?.name} = ${it.asSourceString()}")
+                        if (parameter?.name == "contentDescription") {
+                            contentDescriptionParameter = parameter
+                            contentDescriptionValue = it
+                        }
                     }
-                    context.report(
-                        ISSUE, node, context.getLocation(node),
-                        "UCallExpression"
-                    )
+                    if (contentDescriptionParameter != null) {
+                        val asSourceString = contentDescriptionValue?.asSourceString() ?: ""
+                        var lintDescription: String? = null
+                        if (asSourceString == "null") {
+                            lintDescription = "contentDescription can't be null"
+                        } else if ("\"[ ]*\"".toRegex().matches(asSourceString)) {
+                            lintDescription = "contentDescription can't be blank"
+                        }
+                        if (lintDescription != null) {
+                            context.report(
+                                ISSUE, node, context.getLocation(node),
+                                lintDescription
+                            )
+                        }
+                    }
                 }
             }
 
